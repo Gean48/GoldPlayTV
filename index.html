@@ -85,9 +85,10 @@
 
 <script>
 function whats(plano) {
-  const numero = "5533999140951";
-  const msg = encodeURIComponent("Olá! Quero contratar o " + plano);
-  window.open("https://wa.me/" + numero + "?text=" + msg, "_blank");
+  const numero = "5533999140951"; // 55 + DDD + número
+  const mensagem = `Olá! Quero contratar o ${plano}`;
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+  window.open(url, "_blank");
 }
 </script>
 
