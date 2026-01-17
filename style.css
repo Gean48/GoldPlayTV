@@ -8,14 +8,12 @@
 /* FUNDO GLOBAL COM IMAGEM */
 body {
   color: #fff;
-
   background:
     linear-gradient(
       rgba(0, 0, 0, 0.80),
       rgba(0, 0, 0, 0.95)
     ),
     url("https://696a5adc093e5846cd3b659a.imgix.net/Best%20Netflix%20Background%20Dc.jpg");
-
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -77,6 +75,16 @@ body {
   font-size: 2em;
   margin: 15px 0;
   color: #e50914;
+}
+
+.card small {
+  display: block;
+  margin-top: 5px;
+}
+
+.card small.economy {
+  color: #28a745;
+  font-weight: bold;
 }
 
 .card button {
