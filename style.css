@@ -343,3 +343,51 @@ body {
   }
 
 }
+
+/* =========================
+   REDES SOCIAIS CABEÇALHO
+========================= */
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
+  border-radius: 30px;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  transition: .3s;
+}
+
+
+.social i {
+  font-size: 20px;
+}
+
+
+/* Instagram */
+.instagram {
+  background: linear-gradient(45deg,#f09433,#dc2743,#bc1888);
+}
+
+
+/* Telegram */
+.telegram {
+  background: #0088cc;
+}
+
+
+.social:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.15);
+}
