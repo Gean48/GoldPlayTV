@@ -345,14 +345,14 @@ body {
 }
 
 /* =========================
-   REDES SOCIAIS CABEÇALHO
+   REDES SOCIAIS DESTAQUE
 ========================= */
 
 .social-buttons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 25px;
+  margin-top: 35px;
   flex-wrap: wrap;
 }
 
@@ -360,32 +360,106 @@ body {
 .social {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 25px;
-  border-radius: 30px;
+  justify-content: center;
+  gap: 12px;
+
+  width: 230px;
+  height: 65px;
+
+  border-radius: 40px;
+
   text-decoration: none;
   color: white;
-  font-weight: 600;
-  transition: .3s;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  letter-spacing: .5px;
+
+  box-shadow:
+    0 0 15px rgba(255,255,255,.15),
+    0 8px 25px rgba(0,0,0,.5);
+
+  transition: .3s ease;
 }
 
 
 .social i {
-  font-size: 20px;
+  font-size: 30px;
 }
 
 
-/* Instagram */
+/* INSTAGRAM */
+
 .instagram {
-  background: linear-gradient(45deg,#f09433,#dc2743,#bc1888);
+  background: linear-gradient(
+    45deg,
+    #f9ce34,
+    #ee2a7b,
+    #6228d7
+  );
+
+  animation: socialPulse 3s infinite;
 }
 
 
-/* Telegram */
+/* TELEGRAM */
+
 .telegram {
-  background: #0088cc;
+  background: linear-gradient(
+    135deg,
+    #0088cc,
+    #00bfff
+  );
+
+  animation: socialPulse 3s infinite 1.5s;
 }
 
+
+/* Efeito ao passar mouse */
+
+.social:hover {
+  transform: scale(1.08) translateY(-5px);
+
+  box-shadow:
+    0 0 30px rgba(47,129,247,.8),
+    0 15px 35px rgba(0,0,0,.6);
+}
+
+
+/* Brilho pulsando */
+
+@keyframes socialPulse {
+
+  0% {
+    box-shadow: 
+    0 0 15px rgba(255,255,255,.2);
+  }
+
+  50% {
+    box-shadow:
+    0 0 35px rgba(47,129,247,.8);
+  }
+
+  100% {
+    box-shadow:
+    0 0 15px rgba(255,255,255,.2);
+  }
+
+}
+
+
+/* Celular */
+
+@media(max-width:600px){
+
+  .social {
+    width: 90%;
+    height: 60px;
+    font-size: 20px;
+  }
+
+}
 
 .social:hover {
   transform: translateY(-3px);
