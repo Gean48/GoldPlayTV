@@ -50,7 +50,6 @@
       <p class="price">R$ 25</p>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Mensal – 1 Tela – R$25')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Mensal – 1 Tela – R$25')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -60,7 +59,6 @@
       <small>Economia de R$ 10,00</small>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Trimestral – 1 Tela – R$65')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Trimestral – 1 Tela – R$65')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -71,7 +69,6 @@
       <small>Economia de R$ 50,00</small>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Semestral + 1 mês – 1 Tela – R$125')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Semestral + 1 mês – 1 Tela – R$125')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -82,7 +79,6 @@
       <small>Economia de R$ 100,00</small>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Anual + 2 meses – 1 Tela – R$250')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Anual + 2 meses – 1 Tela – R$250')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -98,8 +94,6 @@
       <p class="price">R$ 30</p>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Mensal – 2 Telas – R$30')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Mensal – 2 Telas – R$30')"><i class="fa-brands fa-telegram"></i> Telegram</button>
-      </div>
     </div>
 
     <div class="card">
@@ -108,7 +102,6 @@
       <small>Economia de R$ 10,00</small>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Trimestral – 2 Telas – R$80')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Trimestral – 2 Telas – R$80')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -119,7 +112,6 @@
       <small>Economia de R$ 50,00</small>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Semestral + 1 mês – 2 Telas – R$160')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Semestral + 1 mês – 2 Telas – R$160')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -130,7 +122,6 @@
       <small>Economia de R$ 100,00</small>
       <div class="btn-group">
         <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Anual + 2 meses – 2 Telas – R$320')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button type="button" class="btn btn-telegram" onclick="telegram('Olá! Quero contratar o Plano Anual + 2 meses – 2 Telas – R$320')"><i class="fa-brands fa-telegram"></i> Telegram</button>
       </div>
     </div>
 
@@ -234,18 +225,11 @@
 </footer>
 
 <a class="whatsapp-float" href="#" onclick="whats('Olá! Quero mais informações sobre os planos IPTV')" aria-label="Falar no WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-<a class="telegram-float" href="#" onclick="telegram('Olá! Quero mais informações sobre os planos IPTV')" aria-label="Falar no Telegram"><i class="fa-brands fa-telegram"></i></a>
 
 <script>
 function whats(texto) {
   const numero = "5521965204419";
   window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, "_blank");
-}
-
-function telegram(texto) {
-  // ✅ Coloque seu @usuario do Telegram aqui (sem o @)
-  const usuario = "TvGoldPlay";
-  window.open(`https://t.me/${usuario}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
 
