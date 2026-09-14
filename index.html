@@ -41,6 +41,26 @@
 
 </header>
 
+
+<section class="coupon-section">
+  <div class="coupon-box">
+    <h2>🎟️ Cupom de Desconto</h2>
+    <p>Digite seu código promocional antes de escolher seu plano.</p>
+    <div class="coupon-form">
+      <input type="text" id="couponInput" placeholder="Digite seu cupom"
+             maxlength="30" autocomplete="off" aria-label="Código de desconto">
+      <button type="button" class="coupon-btn" onclick="aplicarCupom()">Aplicar Cupom</button>
+    </div>
+    <div id="couponMessage" class="coupon-message" aria-live="polite"></div>
+    <div id="couponApplied" class="coupon-applied" style="display:none;">
+      <span>🎉 Cupom aplicado:</span>
+      <strong id="couponCodeDisplay"></strong>
+      <span id="couponDiscountDisplay"></span>
+      <button type="button" onclick="removerCupom()" aria-label="Remover cupom">✕</button>
+    </div>
+  </div>
+</section>
+
 <section class="plans">
   <h2>PLANO GOLD (1 Tela)</h2>
   <div class="cards">
@@ -49,7 +69,7 @@
       <h3>Plano Mensal</h3>
       <p class="price">R$ 25</p>
       <div class="btn-group">
-        <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Mensal – 1 Tela – R$25')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        <button type="button" class="btn btn-whatsapp" onclick="contratarPlano('Plano Mensal', '1 Tela', 25)"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
       </div>
     </div>
 
@@ -58,7 +78,7 @@
       <p class="price">R$ 65</p>
       <small>Economia de R$ 10,00</small>
       <div class="btn-group">
-        <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Trimestral – 1 Tela – R$65')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        <button type="button" class="btn btn-whatsapp" onclick="contratarPlano('Plano Trimestral', '1 Tela', 65)"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
       </div>
     </div>
 
@@ -68,7 +88,7 @@
       <small>+ 1 mês</small><br>
       <small>Economia de R$ 50,00</small>
       <div class="btn-group">
-        <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Semestral + 1 mês – 1 Tela – R$125')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        <button type="button" class="btn btn-whatsapp" onclick="contratarPlano('Plano Semestral + 1 mês', '1 Tela', 125)"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
       </div>
     </div>
 
@@ -79,7 +99,7 @@
       <small>Economia de R$ 100,00</small>
       <small><strong>💳 Parcele em até 2x</strong></small>
       <div class="btn-group">
-        <button type="button" class="btn btn-whatsapp" onclick="whats('Olá! Quero contratar o Plano Anual + 2 meses – 1 Tela – R$250')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        <button type="button" class="btn btn-whatsapp" onclick="contratarPlano('Plano Anual + 2 meses', '1 Tela', 250)"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
       </div>
     </div>
 
@@ -99,7 +119,7 @@
         <button 
           type="button" 
           class="btn btn-whatsapp" 
-          onclick="whats('Olá! Quero contratar o Plano Mensal – 2 Telas – R$30')">
+          onclick="contratarPlano('Plano Mensal', '2 Telas', 30)">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </button>
       </div>
@@ -115,7 +135,7 @@
         <button 
           type="button" 
           class="btn btn-whatsapp" 
-          onclick="whats('Olá! Quero contratar o Plano Trimestral – 2 Telas – R$80')">
+          onclick="contratarPlano('Plano Trimestral', '2 Telas', 80)">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </button>
       </div>
@@ -132,7 +152,7 @@
         <button 
           type="button" 
           class="btn btn-whatsapp" 
-          onclick="whats('Olá! Quero contratar o Plano Semestral + 1 mês – 2 Telas – R$160')">
+          onclick="contratarPlano('Plano Semestral + 1 mês', '2 Telas', 160)">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </button>
       </div>
@@ -150,7 +170,7 @@
         <button 
           type="button" 
           class="btn btn-whatsapp" 
-          onclick="whats('Olá! Quero contratar o Plano Anual + 2 meses – 2 Telas – R$320')">
+          onclick="contratarPlano('Plano Anual + 2 meses', '2 Telas', 320)">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </button>
       </div>
@@ -258,11 +278,94 @@
 <a class="whatsapp-float" href="#" onclick="whats('Olá! Quero mais informações sobre os planos IPTV')" aria-label="Falar no WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
 
 <script>
+/*
+ * CUPONS: altere somente esta lista para criar seus códigos.
+ * Ex.: "GOLD10": 10 significa 10% de desconto.
+ */
+const cupons = {
+  "GOLD10": 10,
+  "GOLD20": 20,
+  "PROMO50": 50
+};
+
+let cupomAtual = null;
+let descontoAtual = 0;
+
+function aplicarCupom() {
+  const input = document.getElementById("couponInput");
+  const message = document.getElementById("couponMessage");
+  const codigo = input.value.trim().toUpperCase();
+
+  message.className = "coupon-message";
+
+  if (!codigo) {
+    message.textContent = "Digite um código de desconto.";
+    message.classList.add("error");
+    return;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(cupons, codigo)) {
+    cupomAtual = codigo;
+    descontoAtual = Number(cupons[codigo]);
+    message.textContent = `Cupom válido! ${descontoAtual}% de desconto aplicado.`;
+    message.classList.add("success");
+
+    document.getElementById("couponCodeDisplay").textContent = codigo;
+    document.getElementById("couponDiscountDisplay").textContent =
+      ` — ${descontoAtual}% de desconto`;
+    document.getElementById("couponApplied").style.display = "flex";
+    input.value = codigo;
+  } else {
+    cupomAtual = null;
+    descontoAtual = 0;
+    document.getElementById("couponApplied").style.display = "none";
+    message.textContent = "Cupom inválido ou inexistente.";
+    message.classList.add("error");
+  }
+}
+
+function removerCupom() {
+  cupomAtual = null;
+  descontoAtual = 0;
+  document.getElementById("couponInput").value = "";
+  document.getElementById("couponMessage").textContent = "";
+  document.getElementById("couponMessage").className = "coupon-message";
+  document.getElementById("couponApplied").style.display = "none";
+}
+
+function calcularDesconto(valor) {
+  return cupomAtual ? Number((valor * (1 - descontoAtual / 100)).toFixed(2)) : Number(valor);
+}
+
+function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function contratarPlano(nomePlano, telas, valorOriginal) {
+  const valorFinal = calcularDesconto(valorOriginal);
+  const numero = "5521965204419";
+
+  let texto = `Olá! Quero contratar o ${nomePlano} – ${telas}.`;
+  if (cupomAtual) {
+    texto += `\n\nCupom: ${cupomAtual}`;
+    texto += `\nDesconto: ${descontoAtual}%`;
+    texto += `\nValor original: ${formatarMoeda(valorOriginal)}`;
+    texto += `\nValor com desconto: ${formatarMoeda(valorFinal)}`;
+  } else {
+    texto += `\n\nValor: ${formatarMoeda(valorOriginal)}`;
+  }
+
+  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, "_blank");
+}
+
 function whats(texto) {
   const numero = "5521965204419";
   window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
+document.getElementById("couponInput")?.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") aplicarCupom();
+});
 
 document.querySelectorAll(".faq-question").forEach(btn => {
   btn.addEventListener("click", () => {
