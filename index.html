@@ -45,7 +45,7 @@
 <section class="coupon-section">
   <div class="coupon-box">
     <h2>🎟️ Cupom de Desconto</h2>
-    <p>Digite seu código promocional antes de escolher seu plano.</p>
+    <p>Digite seu código promocional antes de escolher seu plano.<br><strong>Os cupons são válidos somente para os dois planos mensais.</strong></p>
     <div class="coupon-form">
       <input type="text" id="couponInput" placeholder="Digite seu cupom"
              maxlength="30" autocomplete="off" aria-label="Código de desconto">
@@ -69,7 +69,7 @@
       <h3>Plano Mensal</h3>
       <p class="price">R$ 25</p>
       <div class="btn-group">
-        <button type="button" class="btn btn-whatsapp" onclick="contratarPlano('Plano Mensal', '1 Tela', 25)"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        <button type="button" class="btn btn-whatsapp" onclick="contratarPlano('Plano Mensal', '1 Tela', 25, true)"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
       </div>
     </div>
 
@@ -119,7 +119,7 @@
         <button 
           type="button" 
           class="btn btn-whatsapp" 
-          onclick="contratarPlano('Plano Mensal', '2 Telas', 30)">
+          onclick="contratarPlano('Plano Mensal', '2 Telas', 30, true)">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </button>
       </div>
@@ -307,7 +307,7 @@ function aplicarCupom() {
   if (Object.prototype.hasOwnProperty.call(cupons, codigo)) {
     cupomAtual = codigo;
     descontoAtual = Number(cupons[codigo]);
-    message.textContent = `Cupom válido! ${descontoAtual}% de desconto aplicado.`;
+    message.textContent = `Cupom válido! ${descontoAtual}% de desconto — válido apenas nos planos mensais.`;
     message.classList.add("success");
 
     document.getElementById("couponCodeDisplay").textContent = codigo;
@@ -333,20 +333,23 @@ function removerCupom() {
   document.getElementById("couponApplied").style.display = "none";
 }
 
-function calcularDesconto(valor) {
-  return cupomAtual ? Number((valor * (1 - descontoAtual / 100)).toFixed(2)) : Number(valor);
+function calcularDesconto(valor, permiteCupom = false) {
+  if (cupomAtual && permiteCupom) {
+    return Number((valor * (1 - descontoAtual / 100)).toFixed(2));
+  }
+  return Number(valor);
 }
 
 function formatarMoeda(valor) {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-function contratarPlano(nomePlano, telas, valorOriginal) {
-  const valorFinal = calcularDesconto(valorOriginal);
+function contratarPlano(nomePlano, telas, valorOriginal, permiteCupom = false) {
+  const valorFinal = calcularDesconto(valorOriginal, permiteCupom);
   const numero = "5521965204419";
 
   let texto = `Olá! Quero contratar o ${nomePlano} – ${telas}.`;
-  if (cupomAtual) {
+  if (cupomAtual && permiteCupom) {
     texto += `\n\nCupom: ${cupomAtual}`;
     texto += `\nDesconto: ${descontoAtual}%`;
     texto += `\nValor original: ${formatarMoeda(valorOriginal)}`;
