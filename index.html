@@ -45,7 +45,7 @@
 <section class="coupon-section">
   <div class="coupon-box">
     <h2>🎟️ Cupom de Desconto</h2>
-    <p>Digite seu código promocional antes de escolher seu plano.<br><strong>Os cupons são válidos somente para os dois planos mensais.</strong></p>
+    <p>Digite seu código promocional antes de escolher seu plano.</p>
     <div class="coupon-form">
       <input type="text" id="couponInput" placeholder="Digite seu cupom"
              maxlength="30" autocomplete="off" aria-label="Código de desconto">
@@ -279,17 +279,29 @@
 
 <script>
 /*
- * CUPONS: altere somente esta lista para criar seus códigos.
- * Ex.: "GOLD10": 10 significa 10% de desconto.
+ * CUPONS: cada código pode ter um valor final diferente para cada plano mensal.
+ * Ex.: EMBURANA40 deixa R$ 25 por R$ 15 e R$ 30 por R$ 20.
  */
 const cupons = {
-  "EMBURANA40": 40,
-  "GORDIN40": 40,
-  "MALAQUIAS40": 40
+  "EMBURANA": {
+    plano25: 15,
+    plano30: 20
+  },
+  "GOLD10": {
+    plano25: 22.50,
+    plano30: 27.00
+  },
+  "GOLD20": {
+    plano25: 20.00,
+    plano30: 24.00
+  },
+  "PROMO50": {
+    plano25: 12.50,
+    plano30: 15.00
+  }
 };
 
 let cupomAtual = null;
-let descontoAtual = 0;
 
 function aplicarCupom() {
   const input = document.getElementById("couponInput");
@@ -306,18 +318,15 @@ function aplicarCupom() {
 
   if (Object.prototype.hasOwnProperty.call(cupons, codigo)) {
     cupomAtual = codigo;
-    descontoAtual = Number(cupons[codigo]);
-    message.textContent = `Cupom válido! ${descontoAtual}% de desconto — válido apenas nos planos mensais.`;
+    message.textContent = "Cupom válido! O desconto será calculado conforme o plano mensal escolhido.";
     message.classList.add("success");
 
     document.getElementById("couponCodeDisplay").textContent = codigo;
-    document.getElementById("couponDiscountDisplay").textContent =
-      ` — ${descontoAtual}% de desconto`;
+    document.getElementById("couponDiscountDisplay").textContent = " — desconto disponível nos planos mensais";
     document.getElementById("couponApplied").style.display = "flex";
     input.value = codigo;
   } else {
     cupomAtual = null;
-    descontoAtual = 0;
     document.getElementById("couponApplied").style.display = "none";
     message.textContent = "Cupom inválido ou inexistente.";
     message.classList.add("error");
@@ -326,18 +335,34 @@ function aplicarCupom() {
 
 function removerCupom() {
   cupomAtual = null;
-  descontoAtual = 0;
   document.getElementById("couponInput").value = "";
   document.getElementById("couponMessage").textContent = "";
   document.getElementById("couponMessage").className = "coupon-message";
   document.getElementById("couponApplied").style.display = "none";
 }
 
-function calcularDesconto(valor, permiteCupom = false) {
-  if (cupomAtual && permiteCupom) {
-    return Number((valor * (1 - descontoAtual / 100)).toFixed(2));
+function obterValorComCupom(valorOriginal, permiteCupom = false) {
+  if (!cupomAtual || !permiteCupom) {
+    return { valorFinal: Number(valorOriginal), descontoPercentual: 0 };
   }
-  return Number(valor);
+
+  const cupom = cupons[cupomAtual];
+  let valorPromocional = null;
+
+  if (Number(valorOriginal) === 25) {
+    valorPromocional = cupom.plano25;
+  } else if (Number(valorOriginal) === 30) {
+    valorPromocional = cupom.plano30;
+  }
+
+  if (valorPromocional === null || valorPromocional === undefined) {
+    return { valorFinal: Number(valorOriginal), descontoPercentual: 0 };
+  }
+
+  const valorFinal = Number(valorPromocional.toFixed(2));
+  const descontoPercentual = Number(((1 - valorFinal / Number(valorOriginal)) * 100).toFixed(2));
+
+  return { valorFinal, descontoPercentual };
 }
 
 function formatarMoeda(valor) {
@@ -345,13 +370,16 @@ function formatarMoeda(valor) {
 }
 
 function contratarPlano(nomePlano, telas, valorOriginal, permiteCupom = false) {
-  const valorFinal = calcularDesconto(valorOriginal, permiteCupom);
+  const resultado = obterValorComCupom(valorOriginal, permiteCupom);
+  const valorFinal = resultado.valorFinal;
+  const descontoPercentual = resultado.descontoPercentual;
   const numero = "5521965204419";
 
   let texto = `Olá! Quero contratar o ${nomePlano} – ${telas}.`;
-  if (cupomAtual && permiteCupom) {
+
+  if (cupomAtual && descontoPercentual > 0) {
     texto += `\n\nCupom: ${cupomAtual}`;
-    texto += `\nDesconto: ${descontoAtual}%`;
+    texto += `\nDesconto: ${descontoPercentual}%`;
     texto += `\nValor original: ${formatarMoeda(valorOriginal)}`;
     texto += `\nValor com desconto: ${formatarMoeda(valorFinal)}`;
   } else {
